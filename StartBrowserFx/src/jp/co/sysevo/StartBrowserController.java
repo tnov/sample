@@ -2,7 +2,6 @@ package jp.co.sysevo;
 
 import java.io.IOException;
 import java.net.ServerSocket;
-import java.net.Socket;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -69,7 +68,7 @@ public class StartBrowserController extends AnchorPane implements Initializable 
 				System.out.println("ALREADY ACTIVE");
 			} else {
 				System.out.println("ACCEPT WAITING start");
-				Socket socket = serverSocket.accept();
+//				Socket socket = serverSocket.accept();
 				System.out.println("ACCEPT WAITING end");
 			}
 		} catch (IOException e) {
