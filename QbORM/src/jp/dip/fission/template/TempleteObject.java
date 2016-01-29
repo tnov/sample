@@ -3,12 +3,12 @@ package jp.dip.fission.template;
 import java.io.File;
 
 public class TempleteObject {
-	
+
 	// TODO Velocityの組み込み
 	//       Default値のセット
-	
+
 	private String type;
-	
+
 	public static void main(String[] args) {
 		// TODO 自動生成されたメソッド・スタブ
 
@@ -18,11 +18,11 @@ public class TempleteObject {
 		File templateFile = new File(filePath);
 		return templateFile;
 	}
-	
+
 	public static String parse(String test) {
 		return test;
 	}
-	
+
 	// TODO やること
 	//
 	//  パラメータのマッピング→Velociyに任せる。
