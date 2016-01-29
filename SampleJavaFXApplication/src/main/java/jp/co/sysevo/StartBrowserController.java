@@ -36,7 +36,7 @@ public class StartBrowserController extends AnchorPane implements Initializable 
 	}
 
 	private void loadFxml() {
-		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../StartBrowser.fxml"));
+		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("StartBrowser.fxml"));
 		fxmlLoader.setRoot(this);
 		fxmlLoader.setController(this);
 		try {
