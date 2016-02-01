@@ -1,45 +1,54 @@
 package jp.dip.fission;
 
+import java.io.IOException;
 import java.net.URI;
+import java.nio.file.FileVisitResult;
+import java.nio.file.FileVisitor;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Iterator;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.util.List;
 
 public class FolderTree {
 	public static List<URI> getTree(URI url,boolean isFile,boolean isDirectory) {
-		List<URI> list = null;
 		Path path = Paths.get(url);
+		System.out.println(path.toString() + " start");
 		if (path.toFile().exists()) {
-			if (path.toFile().isFile()) {
-				if (isFile) {
-					list = new ArrayList<>();
-					list.add(path.toUri());
-				}
-			} else if(path.toFile().isDirectory()) {
-				if (isDirectory) {
-					list = new ArrayList<>();
-					list.add(path.toUri());
-				}
-				Iterator<Path> ite = path.iterator();
-				while (ite.hasNext()) {
-					List<URI> treeList = getTree(ite.next().toUri(),isFile,isDirectory);
-					if (treeList != null) {
-						list = new ArrayList<>();
-						list.addAll(treeList);
-					}
-				}
-				list = new ArrayList<>();
+			try {
+				Files.walkFileTree(path, new FileVisitor<Path>() {
 
-				list.addAll(getTree(url, isFile, isDirectory));
-			} else {
+					@Override
+					public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
+						System.out.println(dir.toString() + " directory pre");
+						return FileVisitResult.CONTINUE;
+					}
+
+					@Override
+					public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+						System.out.println(file.toString() + " file visit");
+						return FileVisitResult.CONTINUE;
+					}
+
+					@Override
+					public FileVisitResult visitFileFailed(Path file, IOException exc) throws IOException {
+						System.out.println(file.toString() + " file feiled");
+						return FileVisitResult.CONTINUE;
+					}
+
+					@Override
+					public FileVisitResult postVisitDirectory(Path dir, IOException exc) throws IOException {
+						System.out.println(dir.toString() + " directory post");
+						return FileVisitResult.CONTINUE;
+					}
+				});
+			} catch (IOException e) {
+				// TODO 自動生成された catch ブロック
+				e.printStackTrace();
 			}
+		} else {
 		}
-		return list;
-	}
-	public static List<String> getTree(String first,String... more) {
-		Path path = Paths.get(first,more);
+		System.out.println(path.toString() + " end");
 		return null;
 	}
 }
