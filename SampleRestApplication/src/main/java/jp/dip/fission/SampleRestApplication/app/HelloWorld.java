@@ -1,5 +1,10 @@
 package jp.dip.fission.SampleRestApplication.app;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -7,10 +12,15 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
+import org.glassfish.jersey.server.mvc.Viewable;
+
 import jp.dip.fission.SampleRestApplication.json.SampleEntity;
 
 @Path("/hello")
 public class HelloWorld {
+
+	@Inject
+	private HttpServletRequest request;
 
 	@GET
 	@Produces(MediaType.TEXT_PLAIN)
@@ -27,6 +37,7 @@ public class HelloWorld {
 		if (name != null) {
 			entity.name = name;
 		}
+		System.out.println("param = " + request.getParameter("param"));
 		return entity;
 	}
 
@@ -41,5 +52,13 @@ public class HelloWorld {
 			entity.name = bean.name;
 		}
 		return entity;
+	}
+
+	@GET
+	@Path("/velocity")
+	public Viewable helloVelocity() {
+		Map<String, String> model = new HashMap<>();
+		model.put("test", "test");
+		return new Viewable("/hello.vm",model);
 	}
 }

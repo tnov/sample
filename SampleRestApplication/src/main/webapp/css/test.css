@@ -1,0 +1,28 @@
+body {
+width:980px;
+margin:0 auto;
+}
+/* ----- ヘッダー ----- */
+#header {
+height:150px;
+background-color:#009b9f;
+}
+/* ----- メニュー ----- */
+#navigation {
+height:40px;
+background-color:#009b9f;
+margin-top:10px;
+}
+/* ----- メイン ----- */
+#content {
+min-height:450px;
+height:auto;
+background-color:#009b9f;
+margin-top:10px;
+}
+/* ----- フッダー ----- */
+#footer {
+height:100px;
+background-color:#009b9f;
+margin-top:10px;
+}
