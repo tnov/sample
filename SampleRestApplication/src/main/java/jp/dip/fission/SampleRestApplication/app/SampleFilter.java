@@ -1,4 +1,4 @@
-package jp.dip.fission.SampleRestApplication.filter;
+package jp.dip.fission.SampleRestApplication.app;
 
 import java.io.IOException;
 

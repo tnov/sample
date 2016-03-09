@@ -1,4 +1,4 @@
-package jp.dip.fission.SampleRestApplication.template;
+package jp.dip.fission.SampleRestApplication.app;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;

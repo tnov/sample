@@ -1,4 +1,4 @@
-package jp.dip.fission.SampleRestApplication.json;
+package jp.dip.fission.SampleRestApplication.entity;
 
 
 public class SampleEntity {

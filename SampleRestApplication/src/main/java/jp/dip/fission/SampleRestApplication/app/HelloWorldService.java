@@ -1,4 +1,4 @@
-package jp.dip.fission.SampleRestApplication.json;
+package jp.dip.fission.SampleRestApplication.app;
 
 import javax.ws.rs.CookieParam;
 import javax.ws.rs.FormParam;
@@ -11,6 +11,8 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Cookie;
+
+import jp.dip.fission.SampleRestApplication.entity.SampleEntity;
 
 @Path("/sample")
 public interface HelloWorldService {

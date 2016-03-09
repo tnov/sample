@@ -14,7 +14,7 @@ import javax.ws.rs.core.MediaType;
 
 import org.glassfish.jersey.server.mvc.Viewable;
 
-import jp.dip.fission.SampleRestApplication.json.SampleEntity;
+import jp.dip.fission.SampleRestApplication.entity.SampleEntity;
 
 @Path("/hello")
 public class HelloWorld {
