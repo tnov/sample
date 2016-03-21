@@ -22,7 +22,7 @@ public class SSOAuthorizedServer {
 		entity.password = bean.password;
 		entity.project = bean.project;
 
-
+		entity.role = "";
 		entity.token = TokenGenerator.createToken();
 		entity.period = PeriodGenerator.createPeriod();
 		return entity;
