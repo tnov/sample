@@ -60,22 +60,21 @@ public class PreferenceVisitor implements FileVisitor<Path> {
 	}
 
 	public void startWatch() {
-		WatchKey key = null;
 		isCancel = false;
 		do {
 			try {
-				key = service.take();
+				WatchKey key = service.take();
 				isRunning = true;
+				key.pollEvents().forEach(event->{
+					Path path = serviceMap.get(key).resolve((Path)event.context());
+					callbacks.forEach(callback->{
+						callback.execute(event.kind(), path);
+					});
+				});
 			} catch (InterruptedException e) {
 				e.printStackTrace();
-				return;
+				isRunning = false;
 			}
-			Path path = serviceMap.get(key);
-			key.pollEvents().forEach(event->{
-				callbacks.forEach(callback->{
-					callback.execute(event.kind(), path);
-				});
-			});
 		} while (isCancel);
 		isRunning = false;
 	}
@@ -103,9 +102,10 @@ public class PreferenceVisitor implements FileVisitor<Path> {
 				callback = null;
 			});
 			callbacks.clear();
-			serviceMap.forEach((path,service) -> {
-				service = null;
-				serviceMap.remove(path);
+			serviceMap.forEach((service,path) -> {
+				path = null;
+				service.reset();
+				serviceMap.remove(service);
 			});
 			serviceMap.clear();
 		}
