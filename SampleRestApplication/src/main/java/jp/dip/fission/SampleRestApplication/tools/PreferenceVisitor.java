@@ -1,6 +1,7 @@
 package jp.dip.fission.SampleRestApplication.tools;
 
 import java.io.IOException;
+import java.nio.file.ClosedWatchServiceException;
 import java.nio.file.FileSystems;
 import java.nio.file.FileVisitResult;
 import java.nio.file.FileVisitor;
@@ -11,10 +12,10 @@ import java.nio.file.WatchService;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.TimeUnit;
 
 public class PreferenceVisitor implements FileVisitor<Path> {
 	
-	private static String POSTFIX_EXTENTIONS = ".properties";
 	private WatchService service = null;
 	private ConcurrentHashMap<WatchKey,Path> serviceMap = null;
 	private ArrayList<FileCallback> callbacks = null;
@@ -60,37 +61,57 @@ public class PreferenceVisitor implements FileVisitor<Path> {
 	}
 
 	public void startWatch() {
+		System.out.println("startWatch");
 		isCancel = false;
 		do {
+			isRunning = true;
 			try {
-				WatchKey key = service.take();
-				isRunning = true;
-				key.pollEvents().forEach(event->{
-					Path path = serviceMap.get(key).resolve((Path)event.context());
-					callbacks.forEach(callback->{
-						callback.execute(event.kind(), path);
+				WatchKey key = service.poll(5, TimeUnit.SECONDS);
+				if (key == null) {
+					continue;
+				} else {
+					key.pollEvents().forEach(event->{
+						Path path = serviceMap.get(key).resolve((Path)event.context());
+						callbacks.forEach(callback->{
+							boolean result = callback.execute(event.kind(), path);
+							// エラー時は監視停止
+							if (!result) {
+								//TODO ログ
+								isCancel = true;
+							}
+						});
 					});
-				});
-			} catch (InterruptedException e) {
+				}
+			} catch (InterruptedException | ClosedWatchServiceException e) {
 				e.printStackTrace();
-				isRunning = false;
+				isCancel = true;
 			}
-		} while (isCancel);
+		} while (!isCancel);
 		isRunning = false;
+		System.out.println("finish");
+	}
+	
+	public boolean isRunning() {
+		return isRunning;
 	}
 	
 	public void cancelWatch() {
 		isCancel = true;
+		System.out.println("cancelWatch");
 	}
 	
 	public void endWatch() throws IOException {
+		System.out.println("start endWatch");
+		int i = 0;
 		while (isRunning) {
+			System.out.println("endWatch" + isRunning());
 			try {
 				Thread.sleep(1000);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
 			// 待機メッセージ
+			System.out.println("sleeping..." + ++i);
 		}
 		try {
 			service.close();
@@ -109,27 +130,6 @@ public class PreferenceVisitor implements FileVisitor<Path> {
 			});
 			serviceMap.clear();
 		}
+		System.out.println("end   endWatch");
 	}
-	
-//	private void test(Path file) throws IOException {
-//		if (file .endsWith(POSTFIX_EXTENTIONS)) {
-//			if (fileMap.contains(file)) {
-//				try (Reader reader = Files.newReader(file.toFile(), StandardCharsets.UTF_8)){
-//					fileMap.get(file).load(reader);
-//				} catch (FileNotFoundException e) {
-//					e.printStackTrace();
-//					fileMap.remove(file);
-//				}
-//			} else {
-//				try (Reader reader = Files.newReader(file.toFile(), StandardCharsets.UTF_8)){
-//					Properties properties = new Properties();
-//					properties.load(reader);
-//					fileMap.put(file, properties);
-//				} catch (FileNotFoundException e) {
-//					e.printStackTrace();
-//					fileMap.remove(file);
-//				}
-//			}
-//		}
-//	}
 }
