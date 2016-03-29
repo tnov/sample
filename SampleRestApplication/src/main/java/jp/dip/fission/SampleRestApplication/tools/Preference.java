@@ -109,7 +109,7 @@ public class Preference {
 	}
 	
 	private void load(Path file) throws IOException {
-		if (file .endsWith(POSTFIX_EXTENTIONS)) {
+		if (file.getFileName().toString().endsWith(POSTFIX_EXTENTIONS)) {
 			if (fileMap.contains(file)) {
 				try (Reader reader = Files.newBufferedReader(file, StandardCharsets.UTF_8)){
 					fileMap.get(file).load(reader);
@@ -124,13 +124,12 @@ public class Preference {
 					fileMap.put(file, properties);
 				} catch (FileNotFoundException e) {
 					e.printStackTrace();
-					fileMap.remove(file);
 				}
 			}
 		}
 	}
 	private void unload(Path file) {
-		if (file .endsWith(POSTFIX_EXTENTIONS)) {
+		if (file.getFileName().toString().endsWith(POSTFIX_EXTENTIONS)) {
 			if (fileMap.contains(file)) {
 				fileMap.remove(file);
 			}
