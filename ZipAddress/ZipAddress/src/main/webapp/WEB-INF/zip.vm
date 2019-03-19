@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script type="text/javascript" src="/js/jquery/jquery-3.1.0.min.js"></script>
+    <script type="text/javascript" src="/lib/bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/js/zip.js"></script>
+    <link rel="stylesheet" type="text/css" href="/lib/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/test.css">
+    <title>Hello Jersey MVC</title>
+  </head>
+  <body>
+    <!-- ダイアログ作成 http://www.hanemaru.com/itemcolumn/12jqueryuidialog.html -->
+    <h1>Hello Jersey MVC !!</h1>
+    <h2>${test}</h2>
+    <input type="text" id="code" value="5360014">
+    <input type="text" id="name" value="">
+    <input type="button" id="sendbtn" value="send">
+  </body>
+</html>
